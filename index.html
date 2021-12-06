@@ -1,0 +1,216 @@
+<body>
+    <style>
+        .caixa {
+            border: 1px solid black;
+            width: 50px;
+            height: 50px;
+            display: block;
+            box-sizing: border-box;
+        }
+        .linha {
+            display: flex;
+        }
+        .simbolos {
+            width: fit-content;
+            margin: auto;
+            margin-top: 30%;
+        }
+    </style>
+    <div>
+        <div class="linha">
+            <div id="id1" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id2" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id3" class="caixa" onclick="colocarPosicao(this)"></div>
+        </div>
+        <div class="linha">
+            <div id="id4" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id5" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id6" class="caixa" onclick="colocarPosicao(this)"></div>
+        </div>
+        <div class="linha">
+            <div id="id7" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id8" class="caixa" onclick="colocarPosicao(this)"></div>
+            <div id="id9" class="caixa" onclick="colocarPosicao(this)"></div>
+        </div>
+    </div>
+    <!--
+    <div>
+        <div class="linha">
+            <p>X=</p>
+            <p id="idX">0</p>
+        </div>
+        <div class="linha">
+            <p>O=</p>
+            <p id="idO">0</p>
+        </div>
+    </div>
+    -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+
+        /*Variavel do simbolo*/
+        let simbolo = window.prompt("Entrada","");
+        while (simbolo.length == 0) {
+            simbolo = window.prompt("Entrada","");
+        }
+
+        /*let ganhouX = 0;
+        let ganhouY = 0;*/
+
+        /*
+        function mostrarPlacar() {
+            document.getElementById("idX").innerHTML = parseInt(ganhouX) + parseInt(document.getElementById("idX").innerText);
+            document.getElementById("idO").innerHTML = parseInt(ganhouX) + parseInt(document.getElementById("idO").innerText);
+        }
+        */
+
+
+        /*Colocar elemento na div*/
+        function colocarPosicao(entrada) {
+            document.getElementById(entrada.id).innerHTML = "<p class='simbolos'>" + simbolo + "</p>";
+            document.getElementById(entrada.id).removeAttribute("onclick");
+            if (colocarPosicaoAleatoria()) {
+                confirmarVitoria(pegarEstados());
+            }
+        }
+
+        /*Pegar estado de todas as caixas*/
+        function pegarEstados() {
+            var elementosCaixa = document.getElementsByClassName("caixa");
+            var valoresCaixa = [];
+            for (var contador = 0; contador <= (elementosCaixa.length-1); contador++) {
+                valoresCaixa[contador] = elementosCaixa[contador].innerText;
+            }
+            return valoresCaixa;
+        }
+
+        /*Robo Aletatorio*/
+        function colocarPosicaoAleatoria() {
+            while (true) {
+                var posicaoAleatoria = Math.floor(Math.random() * 10);
+                var posicaoTexto = "id" + posicaoAleatoria;
+
+                if (posicaoAleatoria != 0) {
+                    if (document.getElementById(posicaoTexto).innerText.length == 0) {
+                        document.getElementById(posicaoTexto).innerHTML = "<p class='simbolos'>O</p>";
+                        document.getElementById(posicaoTexto).removeAttribute("onclick");
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+        /*Mensagem de vitoria*/
+        function alertaVitoriaDerrotaEmpate(ganhou) {
+            if (ganhou == "empate") {
+                alert("Empate!");
+            } else {
+                alert(ganhou + " ganhou!");
+            }
+            /*
+            var elementosCaixa = document.getElementsByClassName("caixa");
+            for (var contador = 0; contador <= (elementosCaixa.length-1); contador++) {
+                elementosCaixa[contador].innerText = "";
+                elementosCaixa[contador].disabled = false;
+            }
+            */
+            document.location.reload(true);
+        }
+
+        /*Confirmar vitoria*/
+        function confirmarVitoria(valores) {
+            if (
+                (valores[0].length != 0) &&
+                (valores[1].length != 0) &&
+                (valores[2].length != 0) &&
+                (valores[0] == valores[1]) &&
+                (valores[1] == valores[2]) &&
+                (valores[2] == valores[0])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[2]);
+
+            } else if (
+                (valores[3].length != 0) &&
+                (valores[4].length != 0) &&
+                (valores[5].length != 0) &&
+                (valores[3] == valores[4]) &&
+                (valores[4] == valores[5]) &&
+                (valores[5] == valores[3])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[3]);
+            } else if (
+                (valores[6].length != 0) &&
+                (valores[7].length != 0) &&
+                (valores[8].length != 0) &&
+                (valores[6] == valores[8]) &&
+                (valores[7] == valores[6]) &&
+                (valores[8] == valores[7])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[6]);
+            } else if (
+                (valores[0].length != 0) &&
+                (valores[3].length != 0) &&
+                (valores[6].length != 0) &&
+                (valores[0] == valores[3]) &&
+                (valores[3] == valores[6]) &&
+                (valores[6] == valores[0])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[0]);
+            } else if (
+                (valores[1].length != 0) &&
+                (valores[4].length != 0) &&
+                (valores[7].length != 0) &&
+                (valores[1] == valores[4]) &&
+                (valores[4] == valores[7]) &&
+                (valores[7] == valores[1])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[1]);
+            } else if (
+                (valores[2].length != 0) &&
+                (valores[5].length != 0) &&
+                (valores[8].length != 0) &&
+                (valores[2] == valores[8]) &&
+                (valores[5] == valores[2]) &&
+                (valores[8] == valores[5])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[2]);
+            } else if (
+                (valores[0].length != 0) &&
+                (valores[4].length != 0) &&
+                (valores[8].length != 0) &&
+                (valores[0] == valores[4]) &&
+                (valores[4] == valores[8]) &&
+                (valores[8] == valores[0])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[0]);
+            } else if (
+                (valores[2].length != 0) &&
+                (valores[4].length != 0) &&
+                (valores[6].length != 0) &&
+                (valores[2] == valores[4]) &&
+                (valores[4] == valores[6]) &&
+                (valores[6] == valores[2])
+            ) {
+                alertaVitoriaDerrotaEmpate(valores[2]);
+            } else {
+                if ((valores[0].length != 0) &&
+                    (valores[1].length != 0) &&
+                    (valores[2].length != 0) &&
+                    (valores[3].length != 0) &&
+                    (valores[4].length != 0) &&
+                    (valores[5].length != 0) &&
+                    (valores[6].length != 0) &&
+                    (valores[7].length != 0) &&
+                    (valores[8].length != 0)) {
+                        alertaVitoriaDerrotaEmpate("empate");
+                    } 
+            }
+        }
+
+
+    </script>
+
+</body>
